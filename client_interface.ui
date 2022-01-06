@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Client_Interface</class>
+ <widget class="QWidget" name="Client_Interface">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>AnjaliOldLipi</family>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Client_Interface</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>900</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="WelcomePage">
+    <widget class="QLabel" name="label_welcomeLabel">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1000</width>
+       <height>350</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Chandas</family>
+       <pointsize>25</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="text">
+      <string>Welcome to Tarun's C++ Client</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_hostAddress">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>440</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>127.0.0.1</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_portNumber">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>610</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>9000</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_hostAddress">
+     <property name="geometry">
+      <rect>
+       <x>186</x>
+       <y>436</y>
+       <width>291</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Host Address:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_portNumber">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>600</y>
+       <width>291</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Port Number: </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_connect">
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>750</y>
+       <width>241</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Connect to Server</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_welcomeLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>290</y>
+       <width>711</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Please enter the Host Address and Port Number</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="loginPage">
+    <widget class="QLabel" name="label_loginPageWelcome">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>140</y>
+       <width>551</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Enter your credentials</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_userName">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>290</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Username:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_userName">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>290</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_login">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>630</y>
+       <width>241</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Login</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_password">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>450</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Password:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit__password">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>450</y>
+       <width>351</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_register">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>490</y>
+       <width>241</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Register</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_loginPageWelcome_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>180</y>
+       <width>361</width>
+       <height>441</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Haven't registered with this application yet? Register now!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="LandingPage">
+    <widget class="QListView" name="listView_chatView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>591</width>
+       <height>721</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_chatBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>760</y>
+       <width>441</width>
+       <height>121</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_sendButton">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>760</y>
+       <width>151</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Send</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_usersActive">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>110</y>
+       <width>381</width>
+       <height>341</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_privChat">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>460</y>
+       <width>181</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start Private Chat</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_groupChat">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>460</y>
+       <width>181</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start Group Chat</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_viewContacts">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>610</y>
+       <width>181</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View Contacts</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_logOut">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>750</y>
+       <width>181</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Logout</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>20</y>
+       <width>381</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select users to chat privately or start a group chat with</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_refreshList">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>610</y>
+       <width>181</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Refresh List</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
