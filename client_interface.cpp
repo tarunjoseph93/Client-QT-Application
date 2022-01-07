@@ -85,14 +85,6 @@ void Client_Interface::onReadyRead()
         readPrivateMessage(dataRead[1],dataRead[2]);
         break;
     }
-//    case 6:
-//    {
-//        privateChatFail(dataRead[1],dataRead[2]);
-//    }
-//    case 7:
-//    {
-//        privateChatPass(dataRead[1],dataRead[2]);
-//    }
 
     }
 }
@@ -128,7 +120,6 @@ void Client_Interface::login_Dup(QString &creds, QString &status)
 void Client_Interface::setUserName(QString &username)
 {
     uname = username;
-    //Add username to chat view
 }
 
 
@@ -251,11 +242,6 @@ void Client_Interface::checkLoginCreds(QString &uname, QString &password)
     client_socket->write(ba);
 }
 
-//void Client_Interface::setActiveUsers()
-//{
-//    activeUsers = list;
-//}
-
 void Client_Interface::getActiveUsers()
 {
     QByteArray ba;
@@ -272,33 +258,6 @@ void Client_Interface::listActiveUsers(QStringList &data)
 
     ui->listWidget_usersActive->addItems(activeUsersList);
 }
-
-
-//void Client_Interface::on_pushButton_privChat_clicked()
-//{
-//    QString selectedUser = ui->listWidget_usersActive->currentItem()->text();
-//    qDebug() << selectedUser;
-
-//    QByteArray ba;
-//    ba.append("PRIV_CHAT_REQ:" + uname.toUtf8() + ":" + selectedUser.toUtf8());
-//    qDebug() << "Private chat request to: " << selectedUser;
-//    client_socket->write(ba);
-//}
-
-//void Client_Interface::privateChatPass(QString &sender, QString &receiver)
-//{
-//    privateReceiver.clear();
-//    privateReceiver = receiver;
-//    qDebug() << "Private chat enabled from: "<< sender << " to: " << receiver;
-//    ui->lineEdit_chatBox->setEnabled(true);
-//    ui->pushButton_sendButton->setEnabled(true);
-//    const int newRow = chatModel->rowCount();
-//    chatModel->insertRow(newRow);
-//    chatModel->setData(chatModel->index(newRow, 0), tr("%1 Joined the Chat").arg(privateReceiver));
-//    chatModel->setData(chatModel->index(newRow, 0), Qt::AlignCenter, Qt::TextAlignmentRole);
-//    chatModel->setData(chatModel->index(newRow, 0), QBrush(Qt::blue), Qt::ForegroundRole);
-//    ui->listView_chatView->scrollToBottom();
-//}
 
 void Client_Interface::sendPrivateMessage()
 {
@@ -327,6 +286,7 @@ void Client_Interface::sendPrivateMessage()
 
 void Client_Interface::readPrivateMessage(QString &sender, QString &text)
 {
+
     //START HERE!
     QString user = ui->listWidget_usersActive->currentItem()->text();
     if(user == sender)
@@ -425,3 +385,22 @@ void Client_Interface::error(QAbstractSocket::SocketError socketError)
 
 
 
+
+void Client_Interface::on_pushButton_register_clicked()
+{
+    Registration reg;
+    reg.setModal(true);
+    reg.exec();
+}
+
+void Client_Interface::on_pushButton_logOut_clicked()
+{
+    client_socket->close();
+    display_welcomePage();
+}
+
+void Client_Interface::on_pushButton_profileInfo_clicked()
+{
+    profInfo = new View_Profile_Info(this);
+    profInfo->show();
+}

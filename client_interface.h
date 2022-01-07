@@ -12,6 +12,9 @@
 #include <QStandardItemModel>
 #include <QAbstractSocket>
 
+#include <registration.h>
+#include "view_profile_info.h"
+
 class QStandardItemModel;
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +32,6 @@ public:
     void display_homePage();
     void display_loginPage();
     void display_welcomePage();
-//    void setActiveUsers(QStringList);
     void listActiveUsers(QStringList &data);
     void setUserName(QString &username);
     QString getUserName(QString username);
@@ -38,8 +40,6 @@ public slots:
     void login_Success(QString &username, QString &status);
     void login_Fail(QString &creds, QString &status);
     void login_Dup(QString &creds, QString &status);
-
-//    void list_ActiveUsers(QString&);
 
 private slots:
     void on_pushButton_connect_clicked();
@@ -50,13 +50,15 @@ private slots:
     void getActiveUsers();
     void sendPrivateMessage();
     void readPrivateMessage(QString &sender, QString &text);
-//    void privateChatFail(QString &sender, QString &receiver);
-//    void privateChatPass(QString &sender, QString &receiver);
-//    void sendLogin(QString &text);
+
 
     void on_pushButton_refreshList_clicked();
 
-//    void on_pushButton_privChat_clicked();
+    void on_pushButton_register_clicked();
+
+    void on_pushButton_logOut_clicked();
+
+    void on_pushButton_profileInfo_clicked();
 
 private:
     Ui::Client_Interface *ui;
@@ -66,6 +68,7 @@ private:
     QString lastUname;
     QStandardItemModel *chatModel;
     QString privateReceiver;
+    View_Profile_Info *profInfo;
 
 };
 #endif // CLIENT_INTERFACE_H
