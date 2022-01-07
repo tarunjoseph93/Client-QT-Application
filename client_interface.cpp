@@ -404,3 +404,9 @@ void Client_Interface::on_pushButton_profileInfo_clicked()
     profInfo = new View_Profile_Info(this);
     profInfo->show();
 }
+
+void Client_Interface::on_pushButton_viewContacts_clicked()
+{
+    contactsView = new ContactsPane(this);
+    contactsView->show();
+}

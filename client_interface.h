@@ -14,6 +14,7 @@
 
 #include <registration.h>
 #include "view_profile_info.h"
+#include "contactspane.h"
 
 class QStandardItemModel;
 
@@ -60,6 +61,8 @@ private slots:
 
     void on_pushButton_profileInfo_clicked();
 
+    void on_pushButton_viewContacts_clicked();
+
 private:
     Ui::Client_Interface *ui;
     QTcpSocket *client_socket;
@@ -69,6 +72,7 @@ private:
     QStandardItemModel *chatModel;
     QString privateReceiver;
     View_Profile_Info *profInfo;
+    ContactsPane *contactsView;
 
 };
 #endif // CLIENT_INTERFACE_H

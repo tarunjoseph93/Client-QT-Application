@@ -194,42 +194,27 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_userName">
+    <widget class="QLineEdit" name="lineEdit_userName">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>290</y>
+       <x>510</x>
+       <y>300</y>
        <width>351</width>
        <height>91</height>
       </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>24</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Username:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_userName">
-     <property name="geometry">
-      <rect>
-       <x>590</x>
-       <y>290</y>
-       <width>351</width>
-       <height>91</height>
-      </rect>
+     <property name="placeholderText">
+      <string>Username</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_login">
      <property name="geometry">
       <rect>
-       <x>690</x>
-       <y>630</y>
+       <x>560</x>
+       <y>640</y>
        <width>241</width>
        <height>111</height>
       </rect>
@@ -238,32 +223,11 @@
       <string>Login</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_password">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>450</y>
-       <width>351</width>
-       <height>91</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>24</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Password:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="lineEdit__password">
      <property name="geometry">
       <rect>
-       <x>590</x>
-       <y>450</y>
+       <x>510</x>
+       <y>480</y>
        <width>351</width>
        <height>91</height>
       </rect>
@@ -271,11 +235,17 @@
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Password</string>
+     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_register">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>150</x>
        <y>490</y>
        <width>241</width>
        <height>111</height>
@@ -288,8 +258,8 @@
     <widget class="QLabel" name="label_loginPageWelcome_2">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>250</y>
+       <x>90</x>
+       <y>240</y>
        <width>361</width>
        <height>241</height>
       </rect>
@@ -329,6 +299,9 @@
        <width>441</width>
        <height>121</height>
       </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Enter your message here....</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_sendButton">
@@ -416,7 +389,10 @@
       </rect>
      </property>
      <property name="text">
-      <string>Select users to chat privately or start a group chat with</string>
+      <string>View Online Users</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

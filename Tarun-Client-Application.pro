@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    contactspane.cpp \
     main.cpp \
     client_interface.cpp \
     registration.cpp \
@@ -23,11 +24,13 @@ SOURCES += \
 
 HEADERS += \
     client_interface.h \
+    contactspane.h \
     registration.h \
     view_profile_info.h
 
 FORMS += \
     client_interface.ui \
+    contactspane.ui \
     registration.ui \
     view_profile_info.ui
 
