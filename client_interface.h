@@ -32,7 +32,7 @@ public:
 //    void setActiveUsers(QStringList);
     void listActiveUsers(QStringList &data);
     void setUserName(QString &username);
-    getUserName(QString username);
+    QString getUserName(QString username);
 
 public slots:
     void login_Success(QString &username, QString &status);
@@ -50,13 +50,13 @@ private slots:
     void getActiveUsers();
     void sendPrivateMessage();
     void readPrivateMessage(QString &sender, QString &text);
-    void privateChatFail(QString &sender, QString &receiver);
-    void privateChatPass(QString &sender, QString &receiver);
+//    void privateChatFail(QString &sender, QString &receiver);
+//    void privateChatPass(QString &sender, QString &receiver);
 //    void sendLogin(QString &text);
 
     void on_pushButton_refreshList_clicked();
 
-    void on_pushButton_privChat_clicked();
+//    void on_pushButton_privChat_clicked();
 
 private:
     Ui::Client_Interface *ui;

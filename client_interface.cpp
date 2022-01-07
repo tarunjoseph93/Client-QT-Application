@@ -52,11 +52,11 @@ void Client_Interface::onReadyRead()
     else if (signal == "PRIV_MSG_RCV")
         command = 5;
 
-    else if (signal == "PRIV_MSG_FAIL")
-        command = 6;
+//    else if (signal == "PRIV_MSG_FAIL")
+//        command = 6;
 
-    else if (signal == "PRIV_MSG_PASS")
-        command = 7;
+//    else if (signal == "PRIV_MSG_PASS")
+//        command = 7;
 
     switch(command)
     {
@@ -81,18 +81,20 @@ void Client_Interface::onReadyRead()
         break;
     }
     case 5:
+    {
         readPrivateMessage(dataRead[1],dataRead[2]);
         break;
     }
-    case 6:
-    {
-        privateChatFail(dataRead[1],dataRead[2]);
-    }
-    case 7:
-    {
-        privateChatPass(dataRead[1],dataRead[2]);
-    }
+//    case 6:
+//    {
+//        privateChatFail(dataRead[1],dataRead[2]);
+//    }
+//    case 7:
+//    {
+//        privateChatPass(dataRead[1],dataRead[2]);
+//    }
 
+    }
 }
 
 void Client_Interface::login_Success(QString &uName, QString &status)
@@ -130,7 +132,7 @@ void Client_Interface::setUserName(QString &username)
 }
 
 
-Client_Interface::getUserName(QString username)
+QString Client_Interface::getUserName(QString username)
 {
     return uname;
 }
@@ -272,34 +274,35 @@ void Client_Interface::listActiveUsers(QStringList &data)
 }
 
 
-void Client_Interface::on_pushButton_privChat_clicked()
-{
-    QString selectedUser = ui->listWidget_usersActive->currentItem()->text();
-    qDebug() << selectedUser;
+//void Client_Interface::on_pushButton_privChat_clicked()
+//{
+//    QString selectedUser = ui->listWidget_usersActive->currentItem()->text();
+//    qDebug() << selectedUser;
 
-    QByteArray ba;
-    ba.append("PRIV_CHAT_REQ:" + uname.toUtf8() + selectedUser.toUtf8());
-    qDebug() << "Private chat request to: " << selectedUser;
-    client_socket->write(ba);
-}
+//    QByteArray ba;
+//    ba.append("PRIV_CHAT_REQ:" + uname.toUtf8() + ":" + selectedUser.toUtf8());
+//    qDebug() << "Private chat request to: " << selectedUser;
+//    client_socket->write(ba);
+//}
 
-void Client_Interface::privateChatPass(QString &sender, QString &receiver)
-{
-    privateReceiver.clear();
-    privateReceiver = receiver;
-    qDebug() << "Private chat enabled from: "<< sender << " to: " << receiver;
-    ui->lineEdit_chatBox->setEnabled(true);
-    ui->pushButton_sendButton->setEnabled(true);
-    const int newRow = chatModel->rowCount();
-    chatModel->insertRow(newRow);
-    chatModel->setData(chatModel->index(newRow, 0), tr("%1 Joined the Chat").arg(privateReceiver));
-    chatModel->setData(chatModel->index(newRow, 0), Qt::AlignCenter, Qt::TextAlignmentRole);
-    chatModel->setData(chatModel->index(newRow, 0), QBrush(Qt::blue), Qt::ForegroundRole);
-    ui->listView_chatView->scrollToBottom();
-}
+//void Client_Interface::privateChatPass(QString &sender, QString &receiver)
+//{
+//    privateReceiver.clear();
+//    privateReceiver = receiver;
+//    qDebug() << "Private chat enabled from: "<< sender << " to: " << receiver;
+//    ui->lineEdit_chatBox->setEnabled(true);
+//    ui->pushButton_sendButton->setEnabled(true);
+//    const int newRow = chatModel->rowCount();
+//    chatModel->insertRow(newRow);
+//    chatModel->setData(chatModel->index(newRow, 0), tr("%1 Joined the Chat").arg(privateReceiver));
+//    chatModel->setData(chatModel->index(newRow, 0), Qt::AlignCenter, Qt::TextAlignmentRole);
+//    chatModel->setData(chatModel->index(newRow, 0), QBrush(Qt::blue), Qt::ForegroundRole);
+//    ui->listView_chatView->scrollToBottom();
+//}
 
 void Client_Interface::sendPrivateMessage()
 {
+    privateReceiver = ui->listWidget_usersActive->currentItem()->text();
     QString text = ui->lineEdit_chatBox->text();
     if(text.isEmpty())
     {
@@ -309,7 +312,7 @@ void Client_Interface::sendPrivateMessage()
     QByteArray ba;
     ba.append("PRIVMES:" + uname.toUtf8() + ":" + privateReceiver.toUtf8() + ":" + text.toUtf8());
     qDebug() << "Private message data being sent from: " << uname << " to: " << privateReceiver;
-    client_socket->write(ba;)
+    client_socket->write(ba);
 
     const int newRow = chatModel->rowCount();
     chatModel->insertRow(newRow);
@@ -325,30 +328,39 @@ void Client_Interface::sendPrivateMessage()
 void Client_Interface::readPrivateMessage(QString &sender, QString &text)
 {
     //START HERE!
-    qDebug() << "Received message from: " << sender << ": " << text;
-    int newRow = chatModel->rowCount();
-    if (lastUname != sender)
+    QString user = ui->listWidget_usersActive->currentItem()->text();
+    if(user == sender)
     {
-        lastUname = sender;
-        QFont boldFont;
-        boldFont.setBold(true);
-        chatModel->insertRows(newRow, 2);
-        chatModel->setData(chatModel->index(newRow, 0), sender + QLatin1Char(':'));
+        qDebug() << "Received message from: " << sender << ": " << text;
+        int newRow = chatModel->rowCount();
+        if (lastUname != sender)
+        {
+            lastUname = sender;
+            QFont boldFont;
+            boldFont.setBold(true);
+            chatModel->insertRows(newRow, 2);
+            chatModel->setData(chatModel->index(newRow, 0), sender + QLatin1Char(':'));
+            chatModel->setData(chatModel->index(newRow, 0), int(Qt::AlignLeft | Qt::AlignVCenter), Qt::TextAlignmentRole);
+            chatModel->setData(chatModel->index(newRow, 0), boldFont, Qt::FontRole);
+            ++newRow;
+        } else {
+            chatModel->insertRow(newRow);
+        }
+        chatModel->setData(chatModel->index(newRow, 0), text);
         chatModel->setData(chatModel->index(newRow, 0), int(Qt::AlignLeft | Qt::AlignVCenter), Qt::TextAlignmentRole);
-        chatModel->setData(chatModel->index(newRow, 0), boldFont, Qt::FontRole);
-        ++newRow;
-    } else {
-        chatModel->insertRow(newRow);
+        ui->listView_chatView->scrollToBottom();
     }
-    chatModel->setData(chatModel->index(newRow, 0), text);
-    chatModel->setData(chatModel->index(newRow, 0), int(Qt::AlignLeft | Qt::AlignVCenter), Qt::TextAlignmentRole);
-    ui->listView_chatView->scrollToBottom();
+    else
+    {
+        qDebug() << sender + " has not been selected.";
+    }
 }
 
-void Client_Interface::privateChatFail(QString &sender, QString &receiver)
-{
-    QMessageBox::critical(this, tr("Error"), tr(receiver + " is not online. Failed to start private chat."));
-}
+//void Client_Interface::privateChatFail(QString &sender, QString &receiver)
+//{
+//    QMessageBox::critical(this, tr("Error"), tr("Client is not online. Failed to start private chat."));
+//    qDebug() << "Failed to start private chat from: " << sender << " to: " << receiver;
+//}
 
 
 void Client_Interface::on_pushButton_refreshList_clicked()
