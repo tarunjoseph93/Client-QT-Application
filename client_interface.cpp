@@ -1,7 +1,7 @@
 #include "client_interface.h"
 #include "ui_client_interface.h"
 
-Client_Interface::Client_Interface(QWidget *parent) : QWidget(parent), ui(new Ui::Client_Interface), client_socket(new QTcpSocket(this))
+Client_Interface::Client_Interface(QWidget *parent) : QWidget(parent), ui(new Ui::Client_Interface), client_socket(new QTcpSocket(this)), registerInfo(new Registration(this))
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
@@ -16,6 +16,7 @@ Client_Interface::Client_Interface(QWidget *parent) : QWidget(parent), ui(new Ui
     connect(client_socket, &QTcpSocket::readyRead, this, &Client_Interface::onReadyRead);
     connect(client_socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &Client_Interface::error);
     connect(ui->pushButton_sendButton, &QPushButton::clicked, this, &Client_Interface::sendPrivateMessage);
+    connect(registerInfo, &Registration::newRegister, this, &Client_Interface::newRegister);
     ui->lineEdit_chatBox->setEnabled(true);
     ui->pushButton_sendButton->setEnabled(true);
 }
@@ -52,12 +53,14 @@ void Client_Interface::onReadyRead()
     else if (signal == "PRIV_MSG_RCV")
         command = 5;
 
-//    else if (signal == "PRIV_MSG_FAIL")
-//        command = 6;
+    else if (signal == "PROF_INFO")
+        command = 6;
 
-//    else if (signal == "PRIV_MSG_PASS")
-//        command = 7;
+    else if (signal == "GROUP_CHAT_CREATED:")
+        command = 7;
 
+    else if (signal == "GROUP_CHAT_ADD:")
+        command = 8;
     switch(command)
     {
     case 1:
@@ -83,6 +86,21 @@ void Client_Interface::onReadyRead()
     case 5:
     {
         readPrivateMessage(dataRead[1],dataRead[2]);
+        break;
+    }
+    case 6:
+    {
+        getProfInfo(dataRead);
+        break;
+    }
+    case 7:
+    {
+        setGroupChatCreate();
+        break;
+    }
+    case 8:
+    {
+        setGroupChatAdd();
         break;
     }
 
@@ -120,13 +138,18 @@ void Client_Interface::login_Dup(QString &creds, QString &status)
 void Client_Interface::setUserName(QString &username)
 {
     uname = username;
+    QString header = "Welcome " + uname + " to your Chat Client!";
+    ui->label_userNameHeader->setText(header);
 }
 
-
-QString Client_Interface::getUserName(QString username)
+void Client_Interface::newRegister(QString &firstName,QString &lastName,QString &username,QString &password,QString &age,QString &city,QString &sex)
 {
-    return uname;
+    qDebug() << "New registration details: " << firstName << lastName << username << password << age << city << sex;
+    QByteArray ba;
+    ba.append("REGISTER:" + firstName.toUtf8() + ":" + lastName.toUtf8() + ":" + username.toUtf8() + ":" + password.toUtf8() + ":" + age.toUtf8() + ":" + city.toUtf8() + ":" + sex.toUtf8());
+    client_socket->write(ba);
 }
+
 
 void Client_Interface::display_welcomePage()
 {
@@ -255,9 +278,28 @@ void Client_Interface::listActiveUsers(QStringList &data)
     qDebug() << "Active Users String: " << activeUsers;
     QStringList activeUsersList = activeUsers.split(":");
     activeUsersList.removeAt(0);
+    for(int i=0;i<activeUsersList.length();i++)
+    {
+        if(activeUsersList[i] == uname)
+        {
+            activeUsersList.removeAt(i);
+        }
+        else
+            continue;
+    }
 
     ui->listWidget_usersActive->addItems(activeUsersList);
 }
+
+//void Client_Interface::getProfInfo(QStringList &data)
+//{
+//    QString profInfo = data.join(":");
+//    qDebug() << "Profile Info: " << profInfo;
+//    QStringList profInfoList = profInfo.split(":");
+//    profInfoList.removeAt(0);
+//    emit myProfileInfo(profInfoList);
+
+//}
 
 void Client_Interface::sendPrivateMessage()
 {
@@ -388,9 +430,8 @@ void Client_Interface::error(QAbstractSocket::SocketError socketError)
 
 void Client_Interface::on_pushButton_register_clicked()
 {
-    Registration reg;
-    reg.setModal(true);
-    reg.exec();
+    registerInfo->setModal(true);
+    registerInfo->exec();
 }
 
 void Client_Interface::on_pushButton_logOut_clicked()
@@ -401,12 +442,105 @@ void Client_Interface::on_pushButton_logOut_clicked()
 
 void Client_Interface::on_pushButton_profileInfo_clicked()
 {
-    profInfo = new View_Profile_Info(this);
-    profInfo->show();
+    QByteArray ba;
+    ba.append("GET_PROF_INFO:");
+    client_socket->write(ba);
+    ui->stackedWidget->setCurrentIndex(3);
+}
+
+void Client_Interface::getProfInfo(QStringList &data)
+{
+    QString profInfo = data.join(":");
+    qDebug() << "Profile Info: " << profInfo;
+    QStringList profInfoList = profInfo.split(":");
+    profInfoList.removeAt(0);
+    QString firstName = profInfoList[0];
+    QString lastName = profInfoList[1];
+    QString userName = profInfoList[2];
+    QString password = profInfoList[3];
+    QString age = profInfoList[4];
+    QString city = profInfoList[5];
+    QString sex = profInfoList[6];
+
+    qDebug() << firstName << lastName << userName << password << age << city << sex;
+
+    ui->lineEdit_profInfoFirstName->setPlaceholderText(firstName);
+    ui->lineEdit_profInfoLastName->setPlaceholderText(lastName);
+    ui->lineEdit_profInfoUserName->setPlaceholderText(userName);
+    ui->lineEdit_profInfoPassword->setPlaceholderText(password);
+    ui->lineEdit_profInfoAge->setPlaceholderText(age);
+    ui->lineEdit_profInfoCity->setPlaceholderText(city);
+    ui->lineEdit_profInfoSex->setPlaceholderText(sex);
+
+}
+
+
+
+void Client_Interface::on_pushButton_edit_clicked()
+{
+    QString firstName = ui->lineEdit_profInfoFirstName->text();
+    QString lastName = ui->lineEdit_profInfoLastName->text();
+    QString username = ui->lineEdit_profInfoUserName->text();
+    QString password = ui->lineEdit_profInfoPassword->text();
+    QString age =ui->lineEdit_profInfoAge->text();
+    QString city = ui->lineEdit_profInfoCity->text();
+    QString sex = ui->lineEdit_profInfoSex->text();
+
+    if(firstName.isEmpty() || lastName.isEmpty() || username.isEmpty() || password.isEmpty() || age.isEmpty() || city.isEmpty() || sex.isEmpty())
+    {
+        QMessageBox::critical(this, tr("All fields required"), tr("Some fields are empty. If no edit done, please close."));
+    }
+    else
+    {
+        qDebug() << firstName << lastName << username << password << age << city << sex;
+        QByteArray ba;
+        ba.append("NEW_PROF_INFO:" + firstName.toUtf8() + ":" + lastName.toUtf8() + ":" + username.toUtf8() + ":" + password.toUtf8() + ":" + age.toUtf8() + ":" + city.toUtf8() + ":" + sex.toUtf8());
+        client_socket->write(ba);
+    }
+    ui->stackedWidget->setCurrentIndex(2);
+}
+
+
+
+void Client_Interface::on_pushButton_closeProfile_clicked()
+{
+    display_homePage();
 }
 
 void Client_Interface::on_pushButton_viewContacts_clicked()
 {
-    contactsView = new ContactsPane(this);
-    contactsView->show();
+    QByteArray ba;
+    ba.append("GET_CONTACTS:");
+    client_socket->write(ba);
+    ui->stackedWidget->setCurrentIndex(4);
 }
+
+void Client_Interface::on_pushButton_groupChat_clicked()
+{
+    QString groupChatName = QInputDialog::getText(
+            this
+            , tr("Enter Group Chat Name")
+            , tr("Group Chat Name")
+            , QLineEdit::Normal
+        );
+    qDebug() << "Group Chat Name: " << groupChatName;
+    QByteArray ba;
+    ba.append("GROUP_CHAT_REQ:" + groupChatName.toUtf8());
+    qDebug() << ba;
+    client_socket->write(ba);
+}
+
+void Client_Interface::setGroupChatCreate()
+{
+//    QMessageBox::information(this,tr("Group Chat Created"),tr("Created a group chat"));
+    groupChat = true;
+    qDebug() << "Grooup Chat Flag: " << groupChat;
+}
+
+void Client_Interface::setGroupChatAdd()
+{
+//    QMessageBox::information(this,tr("Added to group Chat"),tr("You've been added to the chat!"));
+    groupChat = true;
+    qDebug() << "Grooup Chat Flag: " << groupChat;
+}
+

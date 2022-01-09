@@ -11,12 +11,12 @@
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QAbstractSocket>
+#include <QInputDialog>
 
-#include <registration.h>
-#include "view_profile_info.h"
-#include "contactspane.h"
+#include "registration.h"
 
 class QStandardItemModel;
+class Registration;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Client_Interface; }
@@ -34,8 +34,9 @@ public:
     void display_loginPage();
     void display_welcomePage();
     void listActiveUsers(QStringList &data);
+    void setGroupChatCreate();
+    void setGroupChatAdd();
     void setUserName(QString &username);
-    QString getUserName(QString username);
 
 public slots:
     void login_Success(QString &username, QString &status);
@@ -51,6 +52,9 @@ private slots:
     void getActiveUsers();
     void sendPrivateMessage();
     void readPrivateMessage(QString &sender, QString &text);
+    void newRegister(QString &firstName,QString &lastName,QString &username,QString &password,QString &age,QString &city,QString &sex);
+    void getProfInfo(QStringList &data);
+
 
 
     void on_pushButton_refreshList_clicked();
@@ -63,6 +67,15 @@ private slots:
 
     void on_pushButton_viewContacts_clicked();
 
+    void on_pushButton_edit_clicked();
+
+    void on_pushButton_closeProfile_clicked();
+
+    void on_pushButton_groupChat_clicked();
+
+signals:
+    void myProfileInfo(QStringList &list);
+
 private:
     Ui::Client_Interface *ui;
     QTcpSocket *client_socket;
@@ -71,8 +84,8 @@ private:
     QString lastUname;
     QStandardItemModel *chatModel;
     QString privateReceiver;
-    View_Profile_Info *profInfo;
-    ContactsPane *contactsView;
+    Registration *registerInfo;
+    bool groupChat=false;
 
 };
 #endif // CLIENT_INTERFACE_H
