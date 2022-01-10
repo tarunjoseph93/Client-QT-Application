@@ -34,7 +34,6 @@ public:
     void display_loginPage();
     void display_welcomePage();
     void listActiveUsers(QStringList &data);
-    void refreshedList(QStringList &data);
     void setUserName(QString &username);
 
 public slots:
@@ -54,24 +53,13 @@ private slots:
     void newRegister(QString &firstName,QString &lastName,QString &username,QString &password,QString &age,QString &city,QString &sex);
     void getProfInfo(QStringList &data);
     void getContactList(QStringList &data);
-
-
-
     void on_pushButton_refreshList_clicked();
-
     void on_pushButton_register_clicked();
-
     void on_pushButton_logOut_clicked();
-
     void on_pushButton_profileInfo_clicked();
-
     void on_pushButton_viewContacts_clicked();
-
     void on_pushButton_edit_clicked();
-
     void on_pushButton_closeProfile_clicked();
-
-
     void on_pushButton_closeContactPane_clicked();
 
 signals:

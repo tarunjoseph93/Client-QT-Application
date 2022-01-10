@@ -59,9 +59,6 @@ void Client_Interface::onReadyRead()
     else if (signal == "CONTACT_LIST")
         command = 7;
 
-    else if (signal == "REFRESH_LIST:")
-        command = 8;
-
     switch(command)
     {
     case 1:
@@ -97,11 +94,6 @@ void Client_Interface::onReadyRead()
     case 7:
     {
         getContactList(dataRead);
-        break;
-    }
-    case 8:
-    {
-        refreshedList(dataRead);
         break;
     }
 
@@ -276,6 +268,7 @@ void Client_Interface::getActiveUsers()
 
 void Client_Interface::listActiveUsers(QStringList &data)
 {
+    ui->listWidget_usersActive->clear();
     QString activeUsers = data.join(":");
     qDebug() << "Active Users String: " << activeUsers;
     QStringList activeUsersList = activeUsers.split(":");
@@ -291,25 +284,6 @@ void Client_Interface::listActiveUsers(QStringList &data)
     }
 
     ui->listWidget_usersActive->addItems(activeUsersList);
-}
-
-void Client_Interface::refreshedList(QStringList &data)
-{
-    QString refreshedUsers = data.join(":");
-    qDebug() << "Refreshed Users String: " << refreshedUsers;
-    QStringList refreshedUsersList = refreshedUsers.split(":");
-    refreshedUsersList.removeAt(0);
-    for(int i=0;i<refreshedUsersList.length();i++)
-    {
-        if(refreshedUsersList[i] == uname)
-        {
-            refreshedUsersList.removeAt(i);
-        }
-        else
-            continue;
-    }
-
-    ui->listWidget_usersActive->addItems(refreshedUsersList);
 }
 
 void Client_Interface::getContactList(QStringList &data)
@@ -380,11 +354,10 @@ void Client_Interface::readPrivateMessage(QString &sender, QString &text)
 
 void Client_Interface::error(QAbstractSocket::SocketError socketError)
 {
-    // show a message to the user that informs of what kind of error occurred
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
     case QAbstractSocket::ProxyConnectionClosedError:
-        return; // handled by disconnectedFromServer
+        return;
     case QAbstractSocket::ConnectionRefusedError:
         QMessageBox::critical(this, tr("Error"), tr("The host refused the connection"));
         break;
@@ -432,9 +405,6 @@ void Client_Interface::error(QAbstractSocket::SocketError socketError)
         Q_UNREACHABLE();
     }
 }
-
-
-
 
 void Client_Interface::on_pushButton_register_clicked()
 {
@@ -527,6 +497,6 @@ void Client_Interface::on_pushButton_closeContactPane_clicked()
 void Client_Interface::on_pushButton_refreshList_clicked()
 {
     QByteArray ba;
-    ba.append("REFRESH:");
+    ba.append("GETACTIVEUSERS:");
     client_socket->write(ba);
 }
