@@ -56,11 +56,12 @@ void Client_Interface::onReadyRead()
     else if (signal == "PROF_INFO")
         command = 6;
 
-    else if (signal == "GROUP_CHAT_CREATED:")
+    else if (signal == "CONTACT_LIST")
         command = 7;
 
-    else if (signal == "GROUP_CHAT_ADD:")
+    else if (signal == "REFRESH_LIST:")
         command = 8;
+
     switch(command)
     {
     case 1:
@@ -95,12 +96,12 @@ void Client_Interface::onReadyRead()
     }
     case 7:
     {
-        setGroupChatCreate();
+        getContactList(dataRead);
         break;
     }
     case 8:
     {
-        setGroupChatAdd();
+        refreshedList(dataRead);
         break;
     }
 
@@ -123,6 +124,7 @@ void Client_Interface::login_Fail(QString &creds, QString &status)
     QString stat = status;
 
     qDebug() << "Credentials: " << cred << "\nStatus: " << stat;
+    QMessageBox::critical(this, tr("Login Error"), tr("Username or password is incorrect!"));
     display_loginPage();
 }
 
@@ -291,15 +293,33 @@ void Client_Interface::listActiveUsers(QStringList &data)
     ui->listWidget_usersActive->addItems(activeUsersList);
 }
 
-//void Client_Interface::getProfInfo(QStringList &data)
-//{
-//    QString profInfo = data.join(":");
-//    qDebug() << "Profile Info: " << profInfo;
-//    QStringList profInfoList = profInfo.split(":");
-//    profInfoList.removeAt(0);
-//    emit myProfileInfo(profInfoList);
+void Client_Interface::refreshedList(QStringList &data)
+{
+    QString refreshedUsers = data.join(":");
+    qDebug() << "Refreshed Users String: " << refreshedUsers;
+    QStringList refreshedUsersList = refreshedUsers.split(":");
+    refreshedUsersList.removeAt(0);
+    for(int i=0;i<refreshedUsersList.length();i++)
+    {
+        if(refreshedUsersList[i] == uname)
+        {
+            refreshedUsersList.removeAt(i);
+        }
+        else
+            continue;
+    }
 
-//}
+    ui->listWidget_usersActive->addItems(refreshedUsersList);
+}
+
+void Client_Interface::getContactList(QStringList &data)
+{
+    QString contacts = data.join(":");
+    qDebug() << "Contacts String: " << contacts;
+    QStringList contactsList = contacts.split(":");
+    contactsList.removeAt(0);
+    ui->listWidget_contactsPane->addItems(contactsList);
+}
 
 void Client_Interface::sendPrivateMessage()
 {
@@ -356,18 +376,6 @@ void Client_Interface::readPrivateMessage(QString &sender, QString &text)
     {
         qDebug() << sender + " has not been selected.";
     }
-}
-
-//void Client_Interface::privateChatFail(QString &sender, QString &receiver)
-//{
-//    QMessageBox::critical(this, tr("Error"), tr("Client is not online. Failed to start private chat."));
-//    qDebug() << "Failed to start private chat from: " << sender << " to: " << receiver;
-//}
-
-
-void Client_Interface::on_pushButton_refreshList_clicked()
-{
-//    getActiveUsers();
 }
 
 void Client_Interface::error(QAbstractSocket::SocketError socketError)
@@ -474,8 +482,6 @@ void Client_Interface::getProfInfo(QStringList &data)
 
 }
 
-
-
 void Client_Interface::on_pushButton_edit_clicked()
 {
     QString firstName = ui->lineEdit_profInfoFirstName->text();
@@ -500,11 +506,9 @@ void Client_Interface::on_pushButton_edit_clicked()
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-
-
 void Client_Interface::on_pushButton_closeProfile_clicked()
 {
-    display_homePage();
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 void Client_Interface::on_pushButton_viewContacts_clicked()
@@ -515,32 +519,14 @@ void Client_Interface::on_pushButton_viewContacts_clicked()
     ui->stackedWidget->setCurrentIndex(4);
 }
 
-void Client_Interface::on_pushButton_groupChat_clicked()
+void Client_Interface::on_pushButton_closeContactPane_clicked()
 {
-    QString groupChatName = QInputDialog::getText(
-            this
-            , tr("Enter Group Chat Name")
-            , tr("Group Chat Name")
-            , QLineEdit::Normal
-        );
-    qDebug() << "Group Chat Name: " << groupChatName;
+    ui->stackedWidget->setCurrentIndex(2);
+}
+
+void Client_Interface::on_pushButton_refreshList_clicked()
+{
     QByteArray ba;
-    ba.append("GROUP_CHAT_REQ:" + groupChatName.toUtf8());
-    qDebug() << ba;
+    ba.append("REFRESH:");
     client_socket->write(ba);
 }
-
-void Client_Interface::setGroupChatCreate()
-{
-//    QMessageBox::information(this,tr("Group Chat Created"),tr("Created a group chat"));
-    groupChat = true;
-    qDebug() << "Grooup Chat Flag: " << groupChat;
-}
-
-void Client_Interface::setGroupChatAdd()
-{
-//    QMessageBox::information(this,tr("Added to group Chat"),tr("You've been added to the chat!"));
-    groupChat = true;
-    qDebug() << "Grooup Chat Flag: " << groupChat;
-}
-

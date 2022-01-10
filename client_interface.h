@@ -34,8 +34,7 @@ public:
     void display_loginPage();
     void display_welcomePage();
     void listActiveUsers(QStringList &data);
-    void setGroupChatCreate();
-    void setGroupChatAdd();
+    void refreshedList(QStringList &data);
     void setUserName(QString &username);
 
 public slots:
@@ -54,6 +53,7 @@ private slots:
     void readPrivateMessage(QString &sender, QString &text);
     void newRegister(QString &firstName,QString &lastName,QString &username,QString &password,QString &age,QString &city,QString &sex);
     void getProfInfo(QStringList &data);
+    void getContactList(QStringList &data);
 
 
 
@@ -71,7 +71,8 @@ private slots:
 
     void on_pushButton_closeProfile_clicked();
 
-    void on_pushButton_groupChat_clicked();
+
+    void on_pushButton_closeContactPane_clicked();
 
 signals:
     void myProfileInfo(QStringList &list);
@@ -85,7 +86,6 @@ private:
     QStandardItemModel *chatModel;
     QString privateReceiver;
     Registration *registerInfo;
-    bool groupChat=false;
 
 };
 #endif // CLIENT_INTERFACE_H

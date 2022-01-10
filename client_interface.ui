@@ -340,19 +340,6 @@
       <string>View Profile Info</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_groupChat">
-     <property name="geometry">
-      <rect>
-       <x>810</x>
-       <y>460</y>
-       <width>181</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start Group Chat</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_viewContacts">
      <property name="geometry">
       <rect>
@@ -401,7 +388,7 @@
     <widget class="QPushButton" name="pushButton_refreshList">
      <property name="geometry">
       <rect>
-       <x>610</x>
+       <x>710</x>
        <y>460</y>
        <width>181</width>
        <height>141</height>
@@ -605,16 +592,6 @@
     </widget>
    </widget>
    <widget class="QWidget" name="ContactsPane">
-    <widget class="QListView" name="listView_contactsPane">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>70</y>
-       <width>571</width>
-       <height>741</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_closeContactPane">
      <property name="geometry">
       <rect>
@@ -626,6 +603,16 @@
      </property>
      <property name="text">
       <string>Close</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_contactsPane">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>551</width>
+       <height>811</height>
+      </rect>
      </property>
     </widget>
    </widget>
